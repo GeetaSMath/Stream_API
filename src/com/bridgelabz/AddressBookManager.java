@@ -2,7 +2,6 @@ package com.bridgelabz;
 import java.util.*;
 
 public class AddressBookManager {
-
     public ArrayList<AddressBookBluePrint> detailedEntries = new ArrayList<>();
     public Map<String, ArrayList<AddressBookBluePrint>> book = new HashMap<>();
     public Map<String, ArrayList<AddressBookBluePrint>> multiBook = new HashMap<>();
@@ -10,7 +9,6 @@ public class AddressBookManager {
     public Map<String, ArrayList<AddressBookBluePrint>> stateList = new HashMap<>();
 
     Scanner sc = new Scanner(System.in);
-
 
     public void callAddressBookBluePrint() {
 
@@ -57,6 +55,39 @@ public class AddressBookManager {
             return check;
         }
     }
+
+    //Checking person in city
+    public void viewPersonByCity() {
+        System.out.println("Enter city");
+        String location = sc.next();
+        Boolean ch = false;
+        try {
+            ch = cityList.entrySet().stream().anyMatch(p -> p.getKey().equals(location));
+            if (ch == true)
+                cityList.entrySet().stream().filter(p -> p.getKey().equals(location)).forEach(System.out::println);
+            else
+                System.out.println("no records found");
+        } catch (Exception e) {
+            System.out.println("No persons in city");
+        }
+    }
+
+    //Checking person in state
+    public void viewPersonByState() {
+        System.out.println("Enter State");
+        String State = sc.next();
+        Boolean ch = false;
+        try {
+            ch = stateList.entrySet().stream().anyMatch(p -> p.getKey().equals(State));
+            if (ch == true)
+                stateList.entrySet().stream().filter(p -> p.getKey().equals(State)).forEach(System.out::println);
+            else
+                System.out.println("no records found");
+        } catch (Exception e) {
+            System.out.println("No persons in state");
+        }
+    }
+
 
     private void callAddressBookTemp(String bookName,
                                      String firstName, String lastName,
@@ -143,25 +174,32 @@ public class AddressBookManager {
             }
         }
     }
-
     public boolean takeOption() {
-        System.out.println("enter 1:add_contact 2:edit_contact or 0 to quit");
+        System.out.println("enter 1:addContact 2:editContact 3:viewPersonByCity 4:viewPersonByState or 0 to quit");
         int opt = sc.nextInt();
         boolean conditon = true;
-        switch (opt) {
-            case 1:
-                callAddressBookBluePrint();
-                break;
-            case 2:
-                editContact();
-                break;
-            case 0:
-                conditon = false;
-                break;
-            default:
-                System.out.println("invalid input");
+        while (conditon) {
+            switch (opt) {
+                case 1:
+                    callAddressBookBluePrint();
+                    break;
+                case 2:
+                    editContact();
+                    break;
+                case 3:
+                    viewPersonByCity();
+                    break;
+                case 4:
+                    viewPersonByState();
+                    break;
+                case 0:
+                    conditon = false;
+                    break;
+                default:
+                    System.out.println("invalid input");
+            }
+
         }
         return conditon;
     }
-
 }
