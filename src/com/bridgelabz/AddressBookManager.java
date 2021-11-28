@@ -1,5 +1,6 @@
 package com.bridgelabz;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class AddressBookManager {
     public ArrayList<AddressBookBluePrint> detailedEntries = new ArrayList<>();
@@ -58,6 +59,7 @@ public class AddressBookManager {
 
     //Checking person in city
     public void viewPersonByCity() {
+
         System.out.println("Enter city");
         String location = sc.next();
         Boolean ch = false;
@@ -88,6 +90,46 @@ public class AddressBookManager {
         }
     }
 
+    //sorting and printing using api streams and lambda exp for each
+    public void viewPersonsByCityOrState() {
+        System.out.println("Enter 1:city 2:state");
+        int opt = sc.nextInt();
+        switch (opt){
+            case 1:
+                System.out.println("Enter city name");
+                String location = sc.next();
+                Map<String, ArrayList<AddressBookBluePrint>> cityL =
+                        cityList.entrySet().stream().filter(p->p.getKey().equals(location)).collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()));
+                cityL.forEach((k, v)-> System.out.println((k+":"+v)));
+                break;
+            case 2:
+                System.out.println("Enter state name");
+                String state = sc.next();
+                Map<String, ArrayList<AddressBookBluePrint>> stateL =
+                        stateList.entrySet().stream().filter(s->s.getValue().equals(state)).collect(Collectors.toMap(entry->entry.getKey(), entry->entry.getValue()));
+                stateL.entrySet().stream().forEach(s-> System.out.println(s.getKey()+":"+s.getValue().toString()));
+                break;
+
+        }
+    }
+    public void countPersonsByCityOrState(){
+        System.out.println("Enter 1:city 2:state");
+        int opt = sc.nextInt();
+        switch (opt){
+            case 1:
+                System.out.println("Enter city name");
+                String location = sc.next();
+                Long count = cityList.entrySet().stream().filter(p->p.getKey().equals(location)).collect(Collectors.counting());
+                System.out.println(location+" Persons : "+count);
+                break;
+            case 2:
+                System.out.println("Enter state name");
+                String state = sc.next();
+                Long count1 = cityList.entrySet().stream().filter(p->p.getKey().equals(state)).collect(Collectors.counting());
+                System.out.println(state+" Persons : "+count1);
+                break;
+        }
+    }
 
     private void callAddressBookTemp(String bookName,
                                      String firstName, String lastName,
@@ -175,10 +217,10 @@ public class AddressBookManager {
         }
     }
     public boolean takeOption() {
-        System.out.println("enter 1:addContact 2:editContact 3:viewPersonByCity 4:viewPersonByState or 0 to quit");
-        int opt = sc.nextInt();
         boolean conditon = true;
         while (conditon) {
+            System.out.println("enter 1:addContact 2:editContact 3:viewPersonByCity 4:viewPersonByState 5:viewPersonsByCityOrState 6:countPersonsByCityOrState or 0 to quit");
+            int opt = sc.nextInt();
             switch (opt) {
                 case 1:
                     callAddressBookBluePrint();
@@ -192,13 +234,17 @@ public class AddressBookManager {
                 case 4:
                     viewPersonByState();
                     break;
+                case 5:
+                    viewPersonsByCityOrState();
+                    break;
+                case 6:
+                    countPersonsByCityOrState();
                 case 0:
                     conditon = false;
                     break;
                 default:
                     System.out.println("invalid input");
             }
-
         }
         return conditon;
     }

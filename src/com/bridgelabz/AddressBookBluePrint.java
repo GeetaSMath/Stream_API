@@ -2,6 +2,8 @@ package com.bridgelabz;
 
 public class AddressBookBluePrint {
     //contact required variables
+
+    //contact required variables
     private String bookName;
     private String firstName;
     private String lastName;
@@ -107,4 +109,5 @@ public class AddressBookBluePrint {
     public void setMobileNum(long mobileNum) {
         this.mobileNum = mobileNum;
     }
+
 }
